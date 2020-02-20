@@ -1,6 +1,6 @@
 {
-  "short_name": "Uniswap Info",
-  "name": "View statistics for Uniswap exchanges.",
+  "short_name": "Bancor Info",
+  "name": "View statistics for Bancor exchanges.",
   "icons": [
     {
       "src": "favicon.ico",

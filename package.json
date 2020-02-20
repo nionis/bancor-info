@@ -1,8 +1,8 @@
 {
-  "name": "uniswap-info",
+  "name": "bancor-info",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://uniswap.info",
+  "homepage": "https://bancor-info.now.sh/",
   "dependencies": {
     "@reach/router": "^1.2.1",
     "apollo-cache-inmemory": "^1.6.3",
@@ -58,7 +58,8 @@
     "fix:all": "yarn fix:lint && yarn fix:format",
     "check:lint": "yarn lint:base",
     "check:format": "yarn format:base --check",
-    "check:all": "yarn check:lint && yarn check:format"
+    "check:all": "yarn check:lint && yarn check:format",
+    "deploy": "yarn build && now switch nionis && now -n bancor-info --prod ./build"
   },
   "eslintConfig": {
     "extends": "react-app"
