@@ -17,7 +17,6 @@ export default ({ base, quote, tokenSwapTotals }) => {
     .plus(buy.totalAmountReturned || '0')
     .plus(sell.totalAmountPurchased || '0')
     .plus(sell.totalAmountReturned || '0')
-    .div(2)
     .toString()
 
   return volume

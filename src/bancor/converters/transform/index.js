@@ -31,7 +31,7 @@ const deriveItems = converters => {
       tokenBalances,
       tokenSwapTotals
     })
-    if (!deriveItems) return result
+    if (!derivedItems) return result
 
     const derivedOldItems = deriveItem({
       smartToken,

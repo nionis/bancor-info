@@ -3,6 +3,7 @@ import getPair from './getPair'
 import getPrice from './getPrice'
 import getTokens from './getTokens'
 import getVolume from './getVolume'
+import getLiquidity from './getLiquidity'
 
 const deriveItem = ({ smartToken, tokenBalances, tokenSwapTotals }) => {
   const tokens = getTokens({ tokenBalances, smartToken })
@@ -14,7 +15,7 @@ const deriveItem = ({ smartToken, tokenBalances, tokenSwapTotals }) => {
   const { base, quote } = getPair({ tokens, smartToken })
 
   // get liquidity
-  const liquidity = quote.balance
+  const liquidity = getLiquidity({ quote })
   if (new BigNumber(liquidity).isZero()) {
     return undefined
   }

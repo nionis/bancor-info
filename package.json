@@ -59,7 +59,8 @@
     "check:lint": "yarn lint:base",
     "check:format": "yarn format:base --check",
     "check:all": "yarn check:lint && yarn check:format",
-    "deploy": "yarn build && now switch nionis && now -n bancor-info --prod ./build"
+    "deploy:dev": "yarn build && now switch nionis && now -n bancor-info",
+    "deploy": "yarn build && now switch nionis && now -n bancor-info --prod"
   },
   "eslintConfig": {
     "extends": "react-app"
