@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
-import { client } from '../apollo/client'
+import fetchChartHome from '../bancor/chartHome'
 
 export function useUniswapHistory(daysToQuery) {
   dayjs.extend(utc)
@@ -29,41 +29,35 @@ export function useUniswapHistory(daysToQuery) {
             utcStartTime = utcEndTime.subtract(7, 'day').startOf('day')
             break
         }
-        let startTime = utcStartTime.unix() - 1 //because we filter on greater than in the query
+        const utcStartTimeTimestamp = utcStartTime.unix() * 1e3
 
-        let data = []
-        let dataEnd = false
-        // while (!dataEnd) {
-        //   let result = await client.query({
-        //     query: UNISWAP_CHART_QUERY,
-        //     variables: {
-        //       date: startTime
-        //     },
-        //     fetchPolicy: 'cache-first'
-        //   })
-        //   if (result) {
-        //     data = data.concat(result.data.uniswapDayDatas)
-        //     if (result.data.uniswapDayDatas.length !== 100) {
-        //       dataEnd = true
-        //     } else {
-        //       startTime = result.data.uniswapDayDatas[result.data.uniswapDayDatas.length - 1].date
-        //     }
-        //   }
-        // }
+        const data = await fetchChartHome()
+          .then(list => {
+            const sliced = []
 
-        /**
-         *  Format data for chart
-         */
-        data.forEach((dayData, i) => {
-          data[i].dayString = data[i].date
-          data[i].ethVolume = parseFloat(data[i].totalVolumeInEth)
-          data[i].usdVolume = parseFloat(data[i].totalVolumeUSD)
-          data[i].dailyEthVolume = parseFloat(data[i].dailyVolumeInETH)
-          data[i].dailyUSDVolume = parseFloat(data[i].dailyVolumeInUSD)
-          data[i].ethLiquidity = parseFloat(data[i].totalLiquidityInEth)
-          data[i].usdLiquidity = parseFloat(data[i].totalLiquidityUSD)
-          data[i].txCount = parseFloat(data[i].txCount)
-        })
+            for (const item of list) {
+              if (dayjs(Number(item.timestamp)).isBefore(utcStartTimeTimestamp)) {
+                break
+              }
+
+              sliced.unshift(item)
+            }
+
+            return sliced
+          })
+          .then(data => {
+            return data.map(item => ({
+              dayString: item.timestamp / 1e3,
+              ethVolume: parseFloat(item.volumeETHInUnit),
+              usdVolume: parseFloat(item.volumeUSDBInUnit),
+              dailyEthVolume: parseFloat(item.volumeETHInUnit),
+              dailyUSDVolume: parseFloat(item.volumeUSDBInUnit),
+              usdLiquidity: parseFloat(item.liquidityUSDBInUnit),
+              ethLiquidity: parseFloat(item.liquidityETHInUnit),
+              txCount: 0
+            }))
+          })
+
         setUniswapData(data) // remove first value
       } catch (err) {
         console.log('error: ', err)
