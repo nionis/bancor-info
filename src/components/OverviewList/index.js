@@ -78,8 +78,8 @@ const DashGrid = styled.div`
     display: grid;
     padding: 0 24px;
     grid-gap: 1em;
-    grid-template-columns: 1fr 0.8fr 0.8fr 1fr 1fr 1fr;
-    grid-template-areas: 'name symbol price volume liquidity txs';
+    grid-template-columns: 1fr 0.8fr 0.8fr 0.8fr 1fr 1fr 1fr;
+    grid-template-areas: 'name symbol pool price volume liquidity txs';
   }
 `
 
@@ -165,7 +165,8 @@ function OverviewList({ currencyUnit }) {
     VOLUME: 'volume24HrUSDBInUnit',
     SYMBOL: 'baseSymbol',
     PRICE_CHANGE: 'priceChange24hr',
-    PRICE_CHANGE_ETH: 'priceChange24hr'
+    PRICE_CHANGE_ETH: 'priceChange24hr',
+    POOL: 'quoteSymbol'
   }
 
   const [sortedColumn, setSortedColumn] = useState(SORT_FIELD.LIQUIDITY)
@@ -212,7 +213,7 @@ function OverviewList({ currencyUnit }) {
       setPage(1)
     } else {
       let newTxs
-      if (field === SORT_FIELD.SYMBOL) {
+      if (field === SORT_FIELD.SYMBOL || field === SORT_FIELD.POOL) {
         newTxs = filteredTxs.slice().sort((a, b) => {
           return a[field].toString().toLowerCase() > b[field].toString().toLowerCase()
             ? (sortDirection ? -1 : 1) * -1
@@ -305,6 +306,7 @@ function OverviewList({ currencyUnit }) {
         {!belowMedium ? (
           <>
             <DataText area={'symbol'}>{exchange.baseSymbol}</DataText>
+            <DataText area={'pool'}>{exchange.quoteSymbol}</DataText>
             <DataText area={'price'}>
               {exchange.price && exchange.priceUSDB
                 ? currencyUnit === 'USD'
@@ -361,6 +363,19 @@ function OverviewList({ currencyUnit }) {
                 }}
               >
                 <Text>Symbol {sortedColumn === SORT_FIELD.SYMBOL ? (!sortDirection ? '↑' : '↓') : ''}</Text>
+              </ClickableText>
+            </Flex>
+            <Flex alignItems="center">
+              <ClickableText
+                area={'pool'}
+                color="textDim"
+                onClick={e => {
+                  setSortedColumn(SORT_FIELD.POOL)
+                  setSortDirection(!sortDirection)
+                  sortTxs(SORT_FIELD.POOL)
+                }}
+              >
+                <Text>Pool {sortedColumn === SORT_FIELD.POOL ? (!sortDirection ? '↑' : '↓') : ''}</Text>
               </ClickableText>
             </Flex>
             <Flex alignItems="center">

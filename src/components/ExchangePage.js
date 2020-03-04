@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import 'feather-icons'
 import { Box, Flex, Text } from 'rebass'
 import styled from 'styled-components'
-import Iframe from 'react-iframe'
+// import Iframe from 'react-iframe'
 import FourByFour from './FourByFour'
 import Panel from './Panel'
 import Dashboard from './Dashboard'
@@ -16,6 +16,7 @@ import { useMedia } from 'react-use'
 import { getTimeFrame, timeframeOptions } from '../constants'
 import Copy from './Copy'
 import { formattedNum } from '../helpers'
+import dexes from '../constants/dexes'
 
 const SmallText = styled.span`
   font-size: 0.6em;
@@ -264,6 +265,12 @@ const AddressLink = styled.a`
   text-decoration: none;
 `
 
+const DexLink = styled.a`
+  font-weight: 500;
+  color: #2f80ed;
+  text-decoration: none;
+`
+
 const DashboardWrapper = styled.div`
   width: calc(100% -40px);
   padding-left: 20px;
@@ -273,6 +280,26 @@ const DashboardWrapper = styled.div`
     width: 100%;
     padding: 0;
   }
+`
+
+const Dexes = styled.div`
+  display: flex;
+  flex-direction: column;
+  background: white;
+  padding: 50px;
+  text-align: center;
+
+  & > .title {
+    font-weight: 500;
+    margin-bottom: 20px;
+  }
+`
+
+const Dex = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
 `
 
 export const ExchangePage = function({
@@ -631,16 +658,18 @@ export const ExchangePage = function({
         >
           <CloseIcon>✕</CloseIcon>
           <FrameBorder>
-            <Iframe
-              url="https://bancor-conversion-widget.now.sh/"
-              height={belowMedium ? '500px' : '660px'}
-              width={belowMedium ? '340px' : '400px'}
-              id="myId"
-              frameBorder="0"
-              style={{ border: 'none', outline: 'none' }}
-              display="initial"
-              position="relative"
-            />
+            <Dexes>
+              <div className="title">Exchanges</div>
+              <div className="exchanges">
+                {dexes.map(dex => (
+                  <Dex key={dex.url}>
+                    <DexLink href={`//${dex.url}`} target="_blank">
+                      {dex.name} ↗
+                    </DexLink>
+                  </Dex>
+                ))}
+              </div>
+            </Dexes>
           </FrameBorder>
         </FrameWrapper>
       ) : (

@@ -42,7 +42,7 @@ const deriveItems = converters => {
 
     const { base, quote, liquidity, volume, price } = derivedItems
 
-    if (quote.address !== tokens.BNT) return result
+    if (![tokens.BNT, tokens.USDB].includes(quote.address)) return result
 
     const { liquidity: oldLiquidity, volume: oldVolume, price: oldPrice } = derivedOldItems
 
