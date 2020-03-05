@@ -63,7 +63,6 @@ const NavLeft = styled.div`
 export default function NavHeader({ exchanges, setCurrencyUnit, currencyUnit }) {
   // for now exclude broken tokens
   const [filteredDirectory, setDirectory] = useState([])
-
   const [capEth, setCapEth] = useState(true)
 
   // filter out exchange with low liquidity

@@ -5,7 +5,8 @@ import { CONVERTERS, ConvertersOld } from './queries'
 import transform from './transform'
 import { getBlocksByTimestamps, fetchAll } from '../utils'
 import { registries } from '../addresses'
-import mainConverters from '../mainConverters'
+import fetchMainConverters from '../mainConverters'
+import fetchExternalTokens from '../externalTokens'
 
 dayjs.extend(utc)
 let promise
@@ -73,20 +74,22 @@ export default async ({ step = 100 }) => {
       })
     }
 
-    return Promise.all([fetchAllConverters(), fetchAllConvertersOld(), mainConverters()]).then(
-      async ([convertersResponse, convertersOldResponse, mainConvertersResult]) => {
-        const result = transform({
-          response: {
-            now: convertersResponse,
-            aDayOld: convertersOldResponse
-          },
-          mainConverters: mainConvertersResult
-        })
+    return Promise.all([
+      fetchAllConverters(),
+      fetchAllConvertersOld(),
+      fetchExternalTokens(),
+      fetchMainConverters()
+    ]).then(async ([convertersResponse, convertersOldResponse, externalTokens, mainConvertersResult]) => {
+      const result = transform({
+        response: {
+          now: convertersResponse,
+          aDayOld: convertersOldResponse
+        },
+        mainConverters: mainConvertersResult
+      })
 
-        console.log('converters', result)
-        return result
-      }
-    )
+      return new Map([...result, ...externalTokens])
+    })
   })
 
   return promise
