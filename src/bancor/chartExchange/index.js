@@ -8,6 +8,7 @@ import deriveItem from '../converters/transform/deriveItem'
 import toAltPrices from '../converters/transform/toAltPrices'
 import toUnit from '../converters/transform/toUnit'
 import fetchMainConverters from '../mainConverters'
+import Web3 from '../Web3'
 
 dayjs.extend(utc)
 const promises = {}
@@ -22,7 +23,7 @@ export default async ({ converterId }) => {
     const timestamps = timestampsFromTo(from, to)
 
     const blockNumbers = await getBlocksByTimestamps({
-      web3: window.web3,
+      web3: Web3(),
       timestamps
     })
 

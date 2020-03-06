@@ -7,6 +7,7 @@ import { getBlocksByTimestamps, fetchAll } from '../utils'
 import { registries } from '../addresses'
 import fetchMainConverters from '../mainConverters'
 import fetchExternalTokens from '../externalTokens'
+import Web3 from '../Web3'
 
 dayjs.extend(utc)
 let promise
@@ -20,7 +21,7 @@ export default async ({ step = 100 }) => {
     const timestamp = utcOneDayBack.unix()
 
     const [oldBlock] = await getBlocksByTimestamps({
-      web3: window.web3,
+      web3: Web3(),
       timestamps: [timestamp]
     })
 

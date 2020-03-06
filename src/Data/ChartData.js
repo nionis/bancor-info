@@ -1,8 +1,6 @@
 import { useEffect, useState } from 'react'
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
-import { client } from '../apollo/client'
-import { tickerQuery } from '../bancor'
 import fetchChartExchange from '../bancor/chartExchange'
 
 export function useChart(exchangeAddress, daysToQuery) {

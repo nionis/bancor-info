@@ -26,23 +26,18 @@ export const isAddress = value => {
   }
 }
 
-export const isWeb3Available = async () => {
+export const getWeb3 = () => {
   /* eslint-disable */
   if (typeof window.ethereum !== 'undefined') {
     window.web3 = new Web3(ethereum)
-    try {
-      await ethereum.enable()
-      return true
-    } catch (error) {
-      return false
-    }
   } else if (typeof window.web3 !== 'undefined') {
     window.web3 = new Web3(web3.currentProvider)
-    return true
   } else {
-    return false
+    window.web3 = new Web3('https://mainnet.infura.io/v3/fa917c0fa5d0484bad5cb44f1205c6d6')
   }
   /* eslint-enable */
+
+  return window.web3
 }
 
 export const toK = (num, fixed) => {

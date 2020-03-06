@@ -6,6 +6,7 @@ import Totals from './query'
 import transform from './transform'
 import { getBlocksByTimestamps, fetchAll } from '../utils'
 import fetchConverters from '../converters'
+import Web3 from '../Web3'
 
 dayjs.extend(utc)
 BigNumber.config({ EXPONENTIAL_AT: 18 })
@@ -19,7 +20,7 @@ export default async ({ step = 1000 }) => {
   const timestampTwoDaysBack = utcTwoDaysBack.unix()
 
   const [oneDaysBlock, twoDaysBlock] = await getBlocksByTimestamps({
-    web3: window.web3,
+    web3: Web3(),
     timestamps: [timestampOneDaysBack, timestampTwoDaysBack]
   })
 
