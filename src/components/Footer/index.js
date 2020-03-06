@@ -6,7 +6,7 @@ import Link from '../Link'
 const links = [
   // { url: 'https://uniswap.io', text: 'About' },
   // { url: 'https://docs.uniswap.io/', text: 'Docs' },
-  { url: 'https://github.com/nionis/uniswap-info', text: 'Code' }
+  { url: 'https://github.com/nionis/bancor-info', text: 'Code' }
 ]
 
 const FooterLink = ({ children, ...rest }) => (

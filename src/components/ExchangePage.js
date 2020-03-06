@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import 'feather-icons'
 import { Box, Flex, Text } from 'rebass'
 import styled from 'styled-components'
-// import Iframe from 'react-iframe'
+import Iframe from 'react-iframe'
 import FourByFour from './FourByFour'
 import Panel from './Panel'
 import Dashboard from './Dashboard'
@@ -259,13 +259,17 @@ const PricePanelMobile = styled(Panel)`
   }
 `
 
-const AddressLink = styled.a`
+const PartnersButton = styled.div`
   font-weight: 500;
   color: #2f80ed;
   text-decoration: none;
+
+  &:hover {
+    cursor: pointer;
+  }
 `
 
-const DexLink = styled.a`
+const Link = styled.a`
   font-weight: 500;
   color: #2f80ed;
   text-decoration: none;
@@ -333,11 +337,10 @@ export const ExchangePage = function({
 
   const [txFilter, setTxFilter] = useState('All')
 
-  const [showModal, ToggleModal] = useState(false)
+  const [showingModal, ToggleModal] = useState(undefined)
+  const [isBuying, setBuyToggle] = useState(true)
 
   const [accountInput, setAccountInput] = useState('')
-
-  const [, setBuyToggle] = useState(true)
 
   const belowMedium = useMedia('(max-width: 440px)')
 
@@ -544,9 +547,9 @@ export const ExchangePage = function({
                 <Flex alignItems="center" justifyContent="space-between" style={{ fontWeight: 500, height: '36px' }}>
                   <div>Exchange</div>
                 </Flex>
-                {/* <AddressLink href={'https://uniswap.exchange/swap/' + tokenAddress} target="_blank">
+                {/* <Link href={'https://uniswap.exchange/swap/' + tokenAddress} target="_blank">
                   View Exchange ↗
-                </AddressLink> */}
+                </Link> */}
               </Flex>
             </Box>
             <Divider />
@@ -554,7 +557,7 @@ export const ExchangePage = function({
               <BuyButton
                 onClick={() => {
                   setBuyToggle(true)
-                  ToggleModal(true)
+                  ToggleModal('widget')
                 }}
               >
                 {'Buy'}
@@ -563,7 +566,7 @@ export const ExchangePage = function({
                 bg="token"
                 onClick={() => {
                   setBuyToggle(false)
-                  ToggleModal(true)
+                  ToggleModal('widget')
                 }}
               >
                 {'Sell'}
@@ -571,15 +574,24 @@ export const ExchangePage = function({
             </ExchangeButtons>
             <Divider />
             <Flex p={24} justifyContent="space-between">
-              <AddressLink href={'https://www.etherscan.io/token/' + tokenAddress + '/'} target="_blank">
+              <PartnersButton
+                onClick={() => {
+                  ToggleModal('partners')
+                }}
+              >
+                Alternative partners
+              </PartnersButton>
+            </Flex>
+            <Flex p={24} justifyContent="space-between">
+              <Link href={'https://www.etherscan.io/token/' + tokenAddress + '/'} target="_blank">
                 Token Address ↗
-              </AddressLink>
+              </Link>
               <Copy toCopy={tokenAddress} />
             </Flex>
             <Flex p={24} justifyContent="space-between">
-              <AddressLink href={'https://www.etherscan.io/address/' + exchangeAddress + '/'} target="_blank">
+              <Link href={'https://www.etherscan.io/address/' + exchangeAddress + '/'} target="_blank">
                 Exchange Address ↗
-              </AddressLink>
+              </Link>
               <Copy toCopy={exchangeAddress} />
             </Flex>
           </Panel>
@@ -650,26 +662,43 @@ export const ExchangePage = function({
           </Panel>
         </Dashboard>
       </DashboardWrapper>
-      {showModal && tokenAddress ? (
+      {showingModal !== undefined && tokenAddress ? (
         <FrameWrapper
           onClick={() => {
-            ToggleModal(false)
+            ToggleModal(undefined)
           }}
         >
           <CloseIcon>✕</CloseIcon>
           <FrameBorder>
-            <Dexes>
-              <div className="title">Exchanges</div>
-              <div className="exchanges">
-                {dexes.map(dex => (
-                  <Dex key={dex.url}>
-                    <DexLink href={`//${dex.url}`} target="_blank">
-                      {dex.name} ↗
-                    </DexLink>
-                  </Dex>
-                ))}
-              </div>
-            </Dexes>
+            {showingModal === 'widget' ? (
+              <Iframe
+                url={
+                  isBuying
+                    ? `https://bancor-conversion-widget.now.sh/#ETH/${symbol.toUpperCase()}`
+                    : `https://bancor-conversion-widget.now.sh/#${symbol.toUpperCase()}/ETH`
+                }
+                height={belowMedium ? '500px' : '660px'}
+                width={belowMedium ? '340px' : '400px'}
+                id="myId"
+                frameBorder="0"
+                style={{ border: 'none', outline: 'none' }}
+                display="initial"
+                position="relative"
+              />
+            ) : (
+              <Dexes>
+                <div className="title">Alternative partners</div>
+                <div className="exchanges">
+                  {dexes.map(dex => (
+                    <Dex key={dex.url}>
+                      <Link href={`//${dex.url}`} target="_blank">
+                        {dex.name} ↗
+                      </Link>
+                    </Dex>
+                  ))}
+                </div>
+              </Dexes>
+            )}
           </FrameBorder>
         </FrameWrapper>
       ) : (
