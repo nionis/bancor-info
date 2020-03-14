@@ -64,19 +64,25 @@ export default async ({ step = 1000, converterUsed }) => {
     fetchMainConverters({ step: 100 }),
     fetchConverters({ step: 100 })
   ]).then(([swaps, mainConverters, converters]) => {
+    const USDBBNT = mainConverters.USDBBNT
+    const ETHBNT = mainConverters.ETHBNT
+    const ETHUSDB = mainConverters.ETHUSDB
+
     swaps.swapsOneDays = swaps.swapsOneDays.filter(swap => {
-      return converters.get(`${swap.fromToken.symbol}BNT`) || converters.get(`${swap.toToken.symbol}BNT`)
+      return (
+        converters.get(`${swap.fromToken.symbol}${swap.toToken.symbol}`) ||
+        converters.get(`${swap.toToken.symbol}${swap.fromToken.symbol}`)
+      )
     })
     swaps.swapsTwoDays = swaps.swapsTwoDays.filter(swap => {
-      return converters.get(`${swap.fromToken.symbol}BNT`) || converters.get(`${swap.toToken.symbol}BNT`)
+      return (
+        converters.get(`${swap.fromToken.symbol}${swap.toToken.symbol}`) ||
+        converters.get(`${swap.toToken.symbol}${swap.fromToken.symbol}`)
+      )
     })
 
     const swapsOneDaysCount = swaps.swapsOneDays.length
     const swapsTwoDaysCount = swaps.swapsTwoDays.length
-
-    const USDBBNT = mainConverters.USDBBNT
-    const ETHBNT = mainConverters.ETHBNT
-    const ETHUSDB = mainConverters.ETHUSDB
 
     swaps.swapsOneDays = swaps.swapsOneDays.map(swap => {
       const isQuote = Object.keys(tokens).includes(swap.toToken.symbol)
