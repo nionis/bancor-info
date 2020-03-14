@@ -1,22 +1,18 @@
-import BN from 'bn.js'
-
 const processCsv = text => {
   const lines = text.split(/\r\n|\n/)
-  const [, ...valueLines] = lines
+  const [keyLines, ...valueLines] = lines
+  const keys = keyLines.split(',')
 
   return valueLines.reduce((result, valueLine) => {
-    const [timestamp, ...amounts] = valueLine.split(',')
-    if (timestamp.length === 0) return result
+    const values = valueLine.split(',')
 
-    const item = {
-      timestamp: timestamp,
-      total: amounts.reduce((p, c) => p.add(new BN(c)), new BN(0)).toString()
-    }
-
-    result.push(item)
+    keys.forEach((key, index) => {
+      if (!result[key]) result[key] = []
+      result[key].push(values[index])
+    })
 
     return result
-  }, [])
+  }, {})
 }
 
 const getData = ({ currency, type }) => {

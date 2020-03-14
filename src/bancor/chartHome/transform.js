@@ -1,36 +1,52 @@
 import BigNumber from 'bignumber.js'
 import { exchange } from '../converters/transform/toAltPrices'
 
-const transform = ({ mainConverters, data }) => {
+const dataToTotal = data => {
+  const currencies = Object.keys(data).filter(key => key !== 'timestamp')
+
+  return data.timestamp.reduce((result, timestamp, index) => {
+    currencies.forEach(currency => {
+      if (!result[timestamp]) {
+        result[timestamp] = '0'
+      }
+
+      result[timestamp] = new BigNumber(result[timestamp]).plus(data[currency][index]).toString()
+    })
+
+    return result
+  }, {})
+}
+
+const transform = ({ mainConverters, datapoints }) => {
   const USDBBNT = mainConverters.USDBBNT
   const ETHBNT = mainConverters.ETHBNT
   const ETHUSDB = mainConverters.ETHUSDB
 
-  const keys = Object.keys(data)
-  const lists = Object.values(data)
-  const reversedLists = lists.map(l => l.slice(0).reverse())
+  // turn to totals
+  const totalsByDatapoint = Object.entries(datapoints).reduce((result, [name, datapoint]) => {
+    result[name] = {
+      ...datapoint,
+      data: dataToTotal(datapoint.data)
+    }
+    return result
+  }, {})
 
-  const merged = keys.reduce((result, key, i) => {
-    const list = reversedLists[i]
+  const totals = Object.values(totalsByDatapoint).reduce((result, o) => {
+    const isUSDB = o.currency === 'usdb'
+    const isLiquidity = o.type === 'liquidity'
 
-    list.forEach(item => {
-      const { timestamp, total } = item
+    Object.entries(o.data).forEach(([timestamp, total]) => {
+      let inUSDB = '0'
+      let inETH = '0'
 
       if (!result[timestamp]) {
         result[timestamp] = {
-          timestamp,
           liquidityUSDBInUnit: '0',
           liquidityETHInUnit: '0',
           volumeUSDBInUnit: '0',
           volumeETHInUnit: '0'
         }
       }
-
-      const isUSDB = key.includes('usdb')
-      const isLiquidity = key.includes('Liquidity')
-
-      let inUSDB = '0'
-      let inETH = '0'
 
       if (isUSDB) {
         inUSDB = total
@@ -72,14 +88,12 @@ const transform = ({ mainConverters, data }) => {
         result[timestamp].volumeUSDBInUnit = new BigNumber(result[timestamp].volumeUSDBInUnit).plus(inUSDB).toString()
         result[timestamp].volumeETHInUnit = new BigNumber(result[timestamp].volumeETHInUnit).plus(inETH).toString()
       }
-
-      return result
     })
 
     return result
   }, {})
 
-  return Object.values(merged)
+  return totals
 }
 
 export default transform

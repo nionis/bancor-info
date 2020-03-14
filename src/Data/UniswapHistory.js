@@ -32,33 +32,34 @@ export function useUniswapHistory(daysToQuery) {
         const utcStartTimeTimestamp = utcStartTime.unix() * 1e3
 
         const data = await fetchChartHome()
-          .then(list => {
-            const sliced = []
-
-            for (const item of list) {
-              if (dayjs(Number(item.timestamp)).isBefore(utcStartTimeTimestamp)) {
-                break
+          .then(totals => {
+            return Object.entries(totals).reduce((result, [timestamp, values]) => {
+              if (dayjs(Number(timestamp)).isBefore(utcStartTimeTimestamp)) {
+                return result
               }
 
-              sliced.unshift(item)
-            }
+              result.push({
+                dayString: timestamp / 1e3,
+                ethVolume: parseFloat(values.volumeETHInUnit),
+                usdVolume: parseFloat(values.volumeUSDBInUnit),
+                dailyEthVolume: parseFloat(values.volumeETHInUnit),
+                dailyUSDVolume: parseFloat(values.volumeUSDBInUnit),
+                usdLiquidity: parseFloat(values.liquidityUSDBInUnit),
+                ethLiquidity: parseFloat(values.liquidityETHInUnit),
+                txCount: 0
+              })
 
-            return sliced
+              return result
+            }, [])
           })
-          .then(data => {
-            return data.map(item => ({
-              dayString: item.timestamp / 1e3,
-              ethVolume: parseFloat(item.volumeETHInUnit),
-              usdVolume: parseFloat(item.volumeUSDBInUnit),
-              dailyEthVolume: parseFloat(item.volumeETHInUnit),
-              dailyUSDVolume: parseFloat(item.volumeUSDBInUnit),
-              usdLiquidity: parseFloat(item.liquidityUSDBInUnit),
-              ethLiquidity: parseFloat(item.liquidityETHInUnit),
-              txCount: 0
-            }))
+          // remove last item
+          .then(list => {
+            list.pop()
+
+            return list
           })
 
-        setUniswapData(data) // remove first value
+        setUniswapData(data)
       } catch (err) {
         console.log('error: ', err)
       }

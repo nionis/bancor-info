@@ -29,16 +29,32 @@ export default async () => {
     .then(results => {
       const mainConverters = results[0]
 
-      const data = {
-        bntLiquidity: results[1],
-        usdbLiquidity: results[2],
-        bntTotal_volume: results[3],
-        usdbTotal_volume: results[4]
+      const datapoints = {
+        bntLiquidity: {
+          currency: 'bnt',
+          type: 'liquidity',
+          data: results[1]
+        },
+        usdbLiquidity: {
+          currency: 'usdb',
+          type: 'liquidity',
+          data: results[2]
+        },
+        bntVolume: {
+          currency: 'bnt',
+          type: 'volume',
+          data: results[3]
+        },
+        usdbVolume: {
+          currency: 'usdb',
+          type: 'volume',
+          data: results[4]
+        }
       }
 
       return {
         mainConverters,
-        data
+        datapoints
       }
     })
     .then(transform)
