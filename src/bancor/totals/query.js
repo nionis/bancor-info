@@ -1,27 +1,27 @@
 import gql from 'graphql-tag'
 
-export default ({ oneDaysBlock, twoDaysBlock }) => gql`
+export default ({ oneDaysTimestamp, twoDaysTimestamp }) => gql`
   query totals(
     $currentConverterRegistry_in: [String!],
     $first: Int!,
     $skip: Int!
   ) {
-    transactionsOneDays: transactions(
+    swapsOneDays: swaps(
       first: $first,
       skip: $skip,
       where: {
-        blockNumber_gte: ${oneDaysBlock}
+        timestamp_gte: ${oneDaysTimestamp}
       }
     ) {
       id
     }
 
-    transactionsTwoDays: transactions(
+    swapsTwoDays: swaps(
       first: $first,
       skip: $skip,
       where: {
-        blockNumber_lt: ${oneDaysBlock}
-        blockNumber_gte: ${twoDaysBlock}
+        timestamp_lt: ${oneDaysTimestamp}
+        timestamp_gte: ${twoDaysTimestamp}
       }
     ) {
       id

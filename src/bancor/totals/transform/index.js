@@ -59,8 +59,8 @@ export default async ({ response, converters }) => {
     .toString()
 
   // TXS
-  const txs = response.transactionsOneDays.length
-  const txsOld = response.transactionsTwoDays.length
+  const txs = response.swapsOneDays.length
+  const txsOld = response.swapsTwoDays.length
   const txs24hr = txs - txsOld
 
   // get txs change %

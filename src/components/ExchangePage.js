@@ -467,7 +467,7 @@ export const ExchangePage = function({
           </TopPanel>
           <TopPanel rounded bg="token" color="white" style={{ gridArea: 'shares' }} p={24}>
             <FourByFour
-              topLeft={<Hint color="textLight">Transactions (24hrs)</Hint>}
+              topLeft={<Hint color="textLight">Swaps (24hrs)</Hint>}
               bottomLeft={
                 <Text fontSize={24} lineHeight={1} fontWeight={500}>
                   {swapsData ? swapsData.swapsOneDaysCount : '-'}
