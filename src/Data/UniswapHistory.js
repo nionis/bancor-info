@@ -31,33 +31,26 @@ export function useUniswapHistory(daysToQuery) {
         }
         const utcStartTimeTimestamp = utcStartTime.unix() * 1e3
 
-        const data = await fetchChartHome()
-          .then(totals => {
-            return Object.entries(totals).reduce((result, [timestamp, values]) => {
-              if (dayjs(Number(timestamp)).isBefore(utcStartTimeTimestamp)) {
-                return result
-              }
-
-              result.push({
-                dayString: timestamp / 1e3,
-                ethVolume: parseFloat(values.volumeETHInUnit),
-                usdVolume: parseFloat(values.volumeUSDBInUnit),
-                dailyEthVolume: parseFloat(values.volumeETHInUnit),
-                dailyUSDVolume: parseFloat(values.volumeUSDBInUnit),
-                usdLiquidity: parseFloat(values.liquidityUSDBInUnit),
-                ethLiquidity: parseFloat(values.liquidityETHInUnit),
-                txCount: 0
-              })
-
+        const data = await fetchChartHome().then(totals => {
+          return Object.entries(totals).reduce((result, [timestamp, values]) => {
+            if (dayjs(Number(timestamp)).isBefore(utcStartTimeTimestamp)) {
               return result
-            }, [])
-          })
-          // remove last item
-          .then(list => {
-            list.pop()
+            }
 
-            return list
-          })
+            result.push({
+              dayString: timestamp / 1e3,
+              ethVolume: parseFloat(values.volumeETHInUnit),
+              usdVolume: parseFloat(values.volumeUSDBInUnit),
+              dailyEthVolume: parseFloat(values.volumeETHInUnit),
+              dailyUSDVolume: parseFloat(values.volumeUSDBInUnit),
+              usdLiquidity: parseFloat(values.liquidityUSDBInUnit),
+              ethLiquidity: parseFloat(values.liquidityETHInUnit),
+              txCount: 0
+            })
+
+            return result
+          }, [])
+        })
 
         setUniswapData(data)
       } catch (err) {
