@@ -106,7 +106,7 @@ export default function NavHeader({ exchanges, setCurrencyUnit, currencyUnit }) 
           tokenSelect={true}
           placeholder={belowLarge ? 'Tokens' : 'Find token'}
           onChange={select => {
-            history.push('/token/' + select.tokenAddress)
+            history.push('/exchange/' + select.value)
           }}
         />
       </NavRight>

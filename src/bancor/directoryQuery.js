@@ -6,7 +6,11 @@ export const directoryQuery = map => {
       tokenName: item.baseName,
       tokenDecimals: item.baseDecimals,
       tokenAddress: item.base,
-      ethBalance: item.liquidityBNT
+      ethBalance: item.liquidityBNT,
+      poolSymbol: item.quoteSymbol,
+      poolName: item.quoteName,
+      poolDecimals: item.quoteDecimals,
+      poolAddress: item.quote
     }
 
     result[data.id] = data
