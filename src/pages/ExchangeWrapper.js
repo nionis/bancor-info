@@ -21,16 +21,16 @@ export const ExchangeWrapper = function({
 
   const chartData = useChart(address, historyDaysToQuery)
 
-  const [tokenName, setTokenName] = useState('')
-
-  const [tokenSymbol, setTokenSymbol] = useState('')
-
   const [logo, setLogo] = useState('')
 
   const [currentData, setCurrentData] = useState({})
 
   useEffect(() => {
     let updateData = {}
+
+    updateData.tokenName = exchangeData.baseName
+    updateData.tokenSymbol = exchangeData.baseSymbol
+    updateData.tokenAddress = exchangeData.base
     updateData.exchangeAddress = exchangeData.exchangeAddress
     updateData.price = exchangeData.price
     updateData.invPrice = exchangeData.invPrice
@@ -76,8 +76,6 @@ export const ExchangeWrapper = function({
 
   useEffect(() => {
     if (exchanges.hasOwnProperty(address)) {
-      setTokenName(exchanges[address].tokenName)
-      setTokenSymbol(exchanges[address].tokenSymbol)
       setLogo(exchanges[address].logoStyled)
     }
   }, [exchanges, address])
@@ -91,9 +89,9 @@ export const ExchangeWrapper = function({
       logo={logo}
       historyDaysToQuery={historyDaysToQuery}
       setHistoryDaysToQuery={setHistoryDaysToQuery}
-      tokenName={tokenName}
-      symbol={tokenSymbol}
-      tokenAddress={exchangeData.tokenAddress}
+      tokenName={currentData.tokenName}
+      symbol={currentData.tokenSymbol}
+      tokenAddress={currentData.tokenAddress}
       tradeVolume={currentData.tradeVolume}
       tradeVolumeUSD={currentData.tradeVolumeUSD}
       oneDayTxs={currentData.oneDayTxs}

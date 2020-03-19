@@ -25,6 +25,7 @@ export default async ({ USDBBNT: USDBBNT_data, ETHBNT: ETHBNT_data, ETHUSDB: ETH
 
   return {
     USDBBNT: {
+      id: USDBBNT_data[0].id,
       ...USDBBNT,
       ...toAltPrices({
         item: USDBBNT,
@@ -34,6 +35,7 @@ export default async ({ USDBBNT: USDBBNT_data, ETHBNT: ETHBNT_data, ETHUSDB: ETH
       })
     },
     ETHBNT: {
+      id: ETHBNT_data[0].id,
       ...ETHBNT,
       ...toAltPrices({
         item: ETHBNT,
@@ -43,6 +45,7 @@ export default async ({ USDBBNT: USDBBNT_data, ETHBNT: ETHBNT_data, ETHUSDB: ETH
       })
     },
     ETHUSDB: {
+      id: ETHUSDB_data[0].id,
       ...ETHUSDB,
       ...toAltPrices({
         item: ETHUSDB,

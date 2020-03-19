@@ -14,6 +14,7 @@ export function useExchangeSpecificData(exchangeAddress) {
       const pair = Array.from(pairs.values()).find(pair => pair.id === address)
 
       setExchangeData({
+        ...pair,
         exchangeAddress: pair.id,
         price: pair.priceUSDB,
         invPrice: pair.priceETH,

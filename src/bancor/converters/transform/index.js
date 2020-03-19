@@ -104,7 +104,8 @@ const deriveItems = converters => {
       volumeChange24hr,
       priceChange24hr,
       liquidity24Hr,
-      liquidityChange24hr
+      liquidityChange24hr,
+      isProxy: !!converter.isProxy
     }
 
     // if duplicate is found, pick one with highest liquidity
@@ -169,6 +170,21 @@ const addExtra = (map, mainConverters) => {
 const transform = ({ response, mainConverters }) => {
   // merge new and old data
   const converters = mergeConverters(response.now, response.aDayOld)
+
+  // add pseudo BNTUSDB
+  const BNTUSDB = (() => {
+    const USDBBNT = Object.assign({}, converters.find(c => c.id === mainConverters.USDBBNT.id) || {})
+
+    return {
+      ...USDBBNT,
+      smartToken: {
+        ...USDBBNT.smartToken,
+        symbol: 'BNT / USDB'
+      },
+      isProxy: true
+    }
+  })()
+  converters.push(BNTUSDB)
 
   // map by converter id
   const items = addExtra(deriveItems(converters), mainConverters)
