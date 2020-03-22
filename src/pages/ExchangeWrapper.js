@@ -35,7 +35,6 @@ export const ExchangeWrapper = function({
     updateData.price = exchangeData.price
     updateData.invPrice = exchangeData.invPrice
     updateData.priceUSD = exchangeData.priceUSD
-    updateData.tokenAddress = exchangeData.tokenAddres
     updateData.pricePercentChange = exchangeData.pricePercentChange
     updateData.pricePercentChangeETH = exchangeData.pricePercentChangeETH
     updateData.volumePercentChange = exchangeData.volumePercentChangeETH
