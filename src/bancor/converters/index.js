@@ -1,15 +1,11 @@
-import dayjs from 'dayjs'
-import utc from 'dayjs/plugin/utc'
 import { client } from '../../apollo/client'
 import { CONVERTERS, ConvertersOld } from './queries'
 import transform from './transform'
-import { getBlocksByTimestamps, fetchAll } from '../utils'
+import { getBlocksByTimestamps, fetchAll, dayjs } from '../utils'
 import { registries } from '../addresses'
 import fetchMainConverters from '../mainConverters'
 import fetchExternalTokens from '../externalTokens'
-import Web3 from '../Web3'
 
-dayjs.extend(utc)
 let promise
 
 export default async ({ step = 100 }) => {
@@ -21,7 +17,6 @@ export default async ({ step = 100 }) => {
     const timestamp = utcOneDayBack.unix()
 
     const [oldBlock] = await getBlocksByTimestamps({
-      web3: Web3(),
       timestamps: [timestamp]
     })
 

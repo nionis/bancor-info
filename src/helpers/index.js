@@ -1,14 +1,9 @@
 import { BigNumber } from 'bignumber.js'
-import dayjs from 'dayjs'
-import { client } from '../apollo/client'
 import { ExportToCsv } from 'export-to-csv'
 import { ethers } from 'ethers'
-import utc from 'dayjs/plugin/utc'
-import Web3 from 'web3'
+import { dayjs } from '../bancor/utils'
 
 BigNumber.set({ EXPONENTIAL_AT: 50 })
-
-dayjs.extend(utc)
 
 export const toNiceDate = date => {
   // let df = new Date(date * 1000).toUTCString('MMMM DD')
@@ -24,20 +19,6 @@ export const isAddress = value => {
   } catch {
     return false
   }
-}
-
-export const getWeb3 = () => {
-  /* eslint-disable */
-  if (typeof window.ethereum !== 'undefined') {
-    window.web3 = new Web3(ethereum)
-  } else if (typeof window.web3 !== 'undefined') {
-    window.web3 = new Web3(web3.currentProvider)
-  } else {
-    window.web3 = new Web3('https://mainnet.infura.io/v3/fa917c0fa5d0484bad5cb44f1205c6d6')
-  }
-  /* eslint-enable */
-
-  return window.web3
 }
 
 export const toK = (num, fixed) => {
@@ -89,13 +70,13 @@ export const formatNumber = num => {
 
 export const getAllTransactions = async address => {
   // current time
-  const utcEndTime = dayjs.utc()
-  let utcStartTime
-  utcStartTime = utcEndTime.subtract(1, 'year').startOf('day')
-  let startTime = utcStartTime.unix() - 1 // -1 because we filter on greater than in the query
+  // const utcEndTime = dayjs.utc()
+  // let utcStartTime
+  // utcStartTime = utcEndTime.subtract(1, 'year').startOf('day')
+  // let startTime = utcStartTime.unix() - 1 // -1 because we filter on greater than in the query
   let data = []
-  let skipCount = 0
-  let fetchingData = true
+  // let skipCount = 0
+  // let fetchingData = true
 
   // while (fetchingData) {
   //   let result = await client.query({

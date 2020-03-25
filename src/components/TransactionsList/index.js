@@ -1,20 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import { useMedia } from 'react-use'
-import dayjs from 'dayjs'
 import LocalLoader from '../LocalLoader'
-import utc from 'dayjs/plugin/utc'
-import { client } from '../../apollo/client'
 import { Box, Flex, Text } from 'rebass'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { useSwaps } from '../../Data/SwapsData'
-
 import Link from '../Link'
 import { Divider } from '../../components'
-
 import { urls, formatTime, Big, formattedNum } from '../../helpers'
-
-dayjs.extend(utc)
 
 const PageButtons = styled.div`
   width: 100%;

@@ -1,16 +1,12 @@
-import dayjs from 'dayjs'
-import utc from 'dayjs/plugin/utc'
 import { client } from '../../apollo/client'
 import Query from './query'
 import { registries } from '../addresses'
-import { getBlocksByTimestamps, timestampsFromTo } from '../utils'
+import { getBlocksByTimestamps, timestampsFromTo, dayjs } from '../utils'
 import deriveItem from '../converters/transform/deriveItem'
 import toAltPrices from '../converters/transform/toAltPrices'
 import toUnit from '../converters/transform/toUnit'
 import fetchMainConverters from '../mainConverters'
-import Web3 from '../Web3'
 
-dayjs.extend(utc)
 const promises = {}
 
 export default async ({ converterId }) => {
@@ -23,7 +19,6 @@ export default async ({ converterId }) => {
     const timestamps = timestampsFromTo(from, to)
 
     const blockNumbers = await getBlocksByTimestamps({
-      web3: Web3(),
       timestamps
     })
 

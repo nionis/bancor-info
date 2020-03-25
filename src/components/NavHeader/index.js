@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useHistory } from 'react-router-dom'
-
+import { Box } from 'rebass'
 import styled from 'styled-components'
+import { isMobile } from 'react-device-detect'
+import { useMedia } from 'react-use'
 import Title from '../Title'
 import Select from '../Select'
 import CurrencySelect from '../CurrencySelect'
 import Panel from '../Panel'
-import { isMobile } from 'react-device-detect'
-import { useMedia } from 'react-use'
 
 const Header = styled(Panel)`
   display: grid;
@@ -22,6 +22,24 @@ const Header = styled(Panel)`
   }
 `
 
+const Button = styled(Box)`
+  &:hover {
+    background-color: #2f80edab;
+    cursor: pointer;
+  }
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 38px;
+  width: 100px;
+  color: white;
+  background-color: #2f80ed;
+  border-radius: 32px;
+  font-weight: 500;
+  font-size: 16px;
+`
+
 const TokenSelect = styled(Select)`
   width: 180px;
 
@@ -34,11 +52,11 @@ const NavRight = styled.div`
   display: grid;
   justify-items: end;
   align-items: center;
-  grid-template-columns: auto 180px;
+  grid-template-columns: auto 130px 180px;
   grid-column-gap: 16px;
 
   @media screen and (max-width: 40em) {
-    grid-template-columns: auto 160px;
+    grid-template-columns: auto auto 160px;
   }
 `
 
@@ -98,6 +116,7 @@ export default function NavHeader({ exchanges, setCurrencyUnit, currencyUnit }) 
         </LinkText>
       </NavLeft>
       <NavRight>
+        <Button style={{ visibility: 'hidden' }}>convert</Button>
         <CurrencySelect setCurrencyUnit={setCurrencyUnit} currencyUnit={currencyUnit} />
         <TokenSelect
           options={filteredDirectory}

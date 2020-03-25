@@ -1,11 +1,7 @@
 import { useEffect, useState } from 'react'
-import dayjs from 'dayjs'
-import utc from 'dayjs/plugin/utc'
 import fetchChartExchange from '../bancor/chartExchange'
 
 export function useChart(exchangeAddress, daysToQuery) {
-  dayjs.extend(utc)
-
   const [chartData, setChartData] = useState([])
 
   useEffect(() => {
@@ -13,23 +9,23 @@ export function useChart(exchangeAddress, daysToQuery) {
       daysToQuery = '1month'
 
       try {
-        const utcEndTime = dayjs.utc()
-        let utcStartTime
-        switch (daysToQuery) {
-          case 'all':
-            utcStartTime = utcEndTime.subtract(1, 'year').startOf('year')
-            break
-          case '3months':
-            utcStartTime = utcEndTime.subtract(3, 'month')
-            break
-          case '1month':
-            utcStartTime = utcEndTime.subtract(1, 'month')
-            break
-          case '1week':
-          default:
-            utcStartTime = utcEndTime.subtract(7, 'day').startOf('day')
-            break
-        }
+        // const utcEndTime = dayjs.utc()
+        // let utcStartTime
+        // switch (daysToQuery) {
+        //   case 'all':
+        //     utcStartTime = utcEndTime.subtract(1, 'year').startOf('year')
+        //     break
+        //   case '3months':
+        //     utcStartTime = utcEndTime.subtract(3, 'month')
+        //     break
+        //   case '1month':
+        //     utcStartTime = utcEndTime.subtract(1, 'month')
+        //     break
+        //   case '1week':
+        //   default:
+        //     utcStartTime = utcEndTime.subtract(7, 'day').startOf('day')
+        //     break
+        // }
         // let startTime = utcStartTime.unix() - 1 // -1 because we filter on greater than in the query
         let data = []
 

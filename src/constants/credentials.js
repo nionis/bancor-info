@@ -1,0 +1,1 @@
+export const etherscanKey = '7SHICA6JVEGIJNH21AM3R7EVIECJ7DJ8ED'

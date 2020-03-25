@@ -1,16 +1,13 @@
-import dayjs from 'dayjs'
-import utc from 'dayjs/plugin/utc'
 import BigNumber from 'bignumber.js'
 import { client } from '../../apollo/client'
 import Swaps from './query'
-import { fetchAll } from '../utils'
+import { fetchAll, dayjs } from '../utils'
 import fetchConverters from '../converters'
 import fetchMainConverters from '../mainConverters'
 import { exchange } from '../converters/transform/toAltPrices'
 import toUnit from '../converters/transform/toUnit'
 import { tokens } from '../addresses'
 
-dayjs.extend(utc)
 BigNumber.config({ EXPONENTIAL_AT: 18 })
 
 const promises = {}

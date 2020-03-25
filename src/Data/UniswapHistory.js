@@ -1,10 +1,8 @@
 import { useEffect, useState } from 'react'
-import dayjs from 'dayjs'
-import utc from 'dayjs/plugin/utc'
 import fetchChartHome from '../bancor/chartHome'
+import { dayjs } from '../bancor/utils'
 
 export function useUniswapHistory(daysToQuery) {
-  dayjs.extend(utc)
   const [uniswapData, setUniswapData] = useState([])
   useEffect(() => {
     const fetchChartData = async function(daysToQuery) {

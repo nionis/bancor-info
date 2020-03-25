@@ -1,14 +1,10 @@
-import dayjs from 'dayjs'
-import utc from 'dayjs/plugin/utc'
 import BigNumber from 'bignumber.js'
 import { client } from '../../apollo/client'
 import Totals from './query'
 import transform from './transform'
-import { getBlocksByTimestamps, fetchAll } from '../utils'
+import { fetchAll, dayjs } from '../utils'
 import fetchConverters from '../converters'
-import Web3 from '../Web3'
 
-dayjs.extend(utc)
 BigNumber.config({ EXPONENTIAL_AT: 18 })
 
 export default async ({ step = 1000 }) => {

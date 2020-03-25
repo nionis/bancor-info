@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useMedia } from 'react-use'
-import dayjs from 'dayjs'
-import utc from 'dayjs/plugin/utc'
 import BigNumber from 'bignumber.js'
 import fetchConverters from '../../bancor/converters'
 import { Box, Flex, Text } from 'rebass'
@@ -12,8 +10,6 @@ import TokenLogo from '../TokenLogo'
 import { formattedNum } from '../../helpers'
 import { Divider } from '../../components'
 import Loader from '../../components/Loader'
-
-dayjs.extend(utc)
 
 const PageButtons = styled.div`
   width: 100%;

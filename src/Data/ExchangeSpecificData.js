@@ -1,11 +1,7 @@
 import { useEffect, useState } from 'react'
-import dayjs from 'dayjs'
-import utc from 'dayjs/plugin/utc'
 import fetchConverters from '../bancor/converters'
 
 export function useExchangeSpecificData(exchangeAddress) {
-  dayjs.extend(utc)
-
   const [exchangeData, setExchangeData] = useState({})
 
   useEffect(() => {
