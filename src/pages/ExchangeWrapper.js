@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react'
+import { darken } from 'polished'
+import Vibrant from 'node-vibrant'
+import { hex } from 'wcag-contrast'
 import { ExchangePage } from '../components/ExchangePage'
 import LocalLoader from '../components/LocalLoader'
 import { useExchangeSpecificData } from '../Data/ExchangeSpecificData'
 import { useChart } from '../Data/ChartData'
 import { useSwaps } from '../Data/SwapsData'
-import { setThemeColor, isAddress } from '../helpers'
-import { darken } from 'polished'
-import Vibrant from 'node-vibrant'
-import { hex } from 'wcag-contrast'
+import { setThemeColor } from '../helpers'
+import { getTokenLogo } from '../bancor/utils'
 
 export const ExchangeWrapper = function({
   address,
@@ -54,9 +55,11 @@ export const ExchangeWrapper = function({
     setCurrentData({}) // reset data for UI
     if (exchanges.hasOwnProperty(address)) {
       let tokenAddress = exchanges[address].tokenAddress
-      const path = `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/${isAddress(
-        tokenAddress
-      )}/logo.png`
+      const path = getTokenLogo({
+        address: tokenAddress,
+        blockchain: address.startsWith('0x') ? 'ethereum' : 'eos'
+      })
+
       Vibrant.from(path).getPalette((err, palette) => {
         if (palette && palette.Vibrant) {
           let detectedHex = palette.Vibrant.hex

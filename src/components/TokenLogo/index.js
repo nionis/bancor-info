@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
-import { isAddress } from '../../helpers/index.js'
+import { getTokenLogo } from '../../bancor/utils'
 
 const BAD_IMAGES = {}
 
@@ -52,9 +52,10 @@ export default function TokenLogo({ address, header = false, size = '1rem', ...r
     address = '0xc011a72400e58ecd99ee497cf89e3775d4bd732f'
   }
 
-  const path = `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/${isAddress(
-    address
-  )}/logo.png`
+  const path = getTokenLogo({
+    address,
+    blockchain: address.startsWith('0x') ? 'ethereum' : 'eos'
+  })
 
   return (
     <Inline>

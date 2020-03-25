@@ -1,6 +1,7 @@
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
 import { etherscanKey } from '../constants/credentials'
+import { isAddress } from '../helpers'
 
 dayjs.extend(utc)
 
@@ -8,7 +9,7 @@ export { dayjs }
 export const hexToNumber = str => parseInt(str, 16)
 export const numberToHex = n => `0x${n.toString(16)}`
 
-const getBlockNumber = async () => {
+export const getBlockNumber = async () => {
   return fetch(`https://api.etherscan.io/api?module=proxy&action=eth_blockNumber&apikey=${etherscanKey}`)
     .then(res => res.json())
     .then(res => {
@@ -16,7 +17,7 @@ const getBlockNumber = async () => {
     })
 }
 
-const getBlock = async blockNumber => {
+export const getBlock = async blockNumber => {
   return fetch(
     `https://api.etherscan.io/api?module=proxy&action=eth_getBlockByNumber&tag=${numberToHex(
       blockNumber
@@ -88,4 +89,11 @@ export const timestampsFromTo = (from, to) => {
   }
 
   return timestamps
+}
+
+export const getTokenLogo = ({ address, blockchain = 'ethereum' }) => {
+  address = isAddress(address)
+  blockchain = blockchain.toLowerCase()
+
+  return `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/${blockchain}/assets/${address}/logo.png`
 }
