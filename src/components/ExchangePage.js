@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import 'feather-icons'
 import { Box, Flex, Text } from 'rebass'
 import styled from 'styled-components'
-import Iframe from 'react-iframe'
+import { useMedia } from 'react-use'
 import FourByFour from './FourByFour'
 import Panel from './Panel'
 import Dashboard from './Dashboard'
@@ -12,11 +12,13 @@ import TransactionsList from './TransactionsList'
 import Chart from './Chart'
 import Loader from './Loader'
 import { Divider, Hint } from '.'
-import { useMedia } from 'react-use'
 import { getTimeFrame, timeframeOptions } from '../constants'
 import Copy from './Copy'
 import { formattedNum } from '../helpers'
-import dexes from '../constants/dexes'
+import Dexes from './Dexes'
+import Popup from './Popup'
+
+const Widget = React.lazy(() => import('./Widget'))
 
 const SmallText = styled.span`
   font-size: 0.6em;
@@ -27,7 +29,7 @@ const ThemedBackground = styled(Box)`
   height: 365px;
   z-index: -1;
   top: 0;
-  width: 100vw;
+  width: 100%;
 
   @media screen and (max-width: 64em) {
     height: 679px;
@@ -187,7 +189,7 @@ const TokenGroup = styled.div`
   min-height: 38px;
 `
 
-const BuyButton = styled(Box)`
+const Button = styled(Box)`
   &:hover {
     background-color: #2f80edab;
     cursor: pointer;
@@ -209,39 +211,10 @@ const ExchangeButtons = styled(Flex)`
   padding: 20px 20px;
 `
 
-const FrameWrapper = styled.div`
-  min-width: 100vw;
-  height: 100vh;
-  left: 0;
-  top: 0;
-  z-index: 9999;
-  background-color: rgba(0, 0, 0, 0.7);
-  position: fixed;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  &:hover {
-    cursor: pointer;
-  }
-
-  @media screen and (max-width: 440px) {
-    padding-top: 20px;
-  }
-`
-
 const FrameBorder = styled.div`
   border-radius: 26px;
   margin-bottom: 20px;
   overflow: hidden;
-`
-
-const CloseIcon = styled.div`
-  position: absolute;
-  color: white;
-  font-size: 30px;
-  top: 20px;
-  right: 20px;
 `
 
 const PricePanelMobile = styled(Panel)`
@@ -286,30 +259,11 @@ const DashboardWrapper = styled.div`
   }
 `
 
-const Dexes = styled.div`
-  display: flex;
-  flex-direction: column;
-  background: white;
-  padding: 50px;
-  text-align: center;
-
-  & > .title {
-    font-weight: 500;
-    margin-bottom: 20px;
-  }
-`
-
-const Dex = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
-`
-
 export const ExchangePage = function({
   exchangeAddress,
   currencyUnit,
   symbol,
+  poolSymbol,
   tradeVolume,
   tradeVolumeUSD,
   oneDayTxs,
@@ -554,15 +508,15 @@ export const ExchangePage = function({
             </Box>
             <Divider />
             <ExchangeButtons alignItems="center" justifyContent="space-between">
-              <BuyButton
+              <Button
                 onClick={() => {
                   setBuyToggle(true)
                   ToggleModal('widget')
                 }}
               >
                 {'Buy'}
-              </BuyButton>
-              <BuyButton
+              </Button>
+              <Button
                 bg="token"
                 onClick={() => {
                   setBuyToggle(false)
@@ -570,7 +524,7 @@ export const ExchangePage = function({
                 }}
               >
                 {'Sell'}
-              </BuyButton>
+              </Button>
             </ExchangeButtons>
             <Divider />
             <Flex p={24} justifyContent="space-between">
@@ -663,44 +617,18 @@ export const ExchangePage = function({
         </Dashboard>
       </DashboardWrapper>
       {showingModal !== undefined && tokenAddress ? (
-        <FrameWrapper
-          onClick={() => {
-            ToggleModal(undefined)
-          }}
-        >
-          <CloseIcon>✕</CloseIcon>
+        <Popup onClose={() => ToggleModal(undefined)}>
           <FrameBorder>
             {showingModal === 'widget' ? (
-              <Iframe
-                url={
-                  isBuying
-                    ? `https://bancor-conversion-widget.now.sh/#ETH/${symbol.toUpperCase()}`
-                    : `https://bancor-conversion-widget.now.sh/#${symbol.toUpperCase()}/ETH`
-                }
-                height={belowMedium ? '500px' : '660px'}
-                width={belowMedium ? '340px' : '400px'}
-                id="myId"
-                frameBorder="0"
-                style={{ border: 'none', outline: 'none' }}
-                display="initial"
-                position="relative"
-              />
+              <React.Suspense fallback={<div>loading...</div>}>
+                <Widget tokenSend={isBuying ? poolSymbol : symbol} tokenReceive={isBuying ? symbol : poolSymbol} />
+                {/* <Button onClick={() => ToggleModal('partners')}>check out other partners</Button> */}
+              </React.Suspense>
             ) : (
-              <Dexes>
-                <div className="title">Alternative partners</div>
-                <div className="exchanges">
-                  {dexes.map(dex => (
-                    <Dex key={dex.url}>
-                      <Link href={`//${dex.url}`} target="_blank">
-                        {dex.name} ↗
-                      </Link>
-                    </Dex>
-                  ))}
-                </div>
-              </Dexes>
+              <Dexes />
             )}
           </FrameBorder>
-        </FrameWrapper>
+        </Popup>
       ) : (
         ''
       )}

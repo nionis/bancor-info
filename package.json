@@ -9,6 +9,7 @@
     "apollo-client": "^2.6.4",
     "apollo-link-http": "^1.5.16",
     "apollo-link-ws": "^1.0.19",
+    "bancor-conversion-widget": "^2.1.0",
     "bignumber.js": "^9.0.0",
     "color-contrast-checker": "^1.5.0",
     "copy-to-clipboard": "^3.2.0",

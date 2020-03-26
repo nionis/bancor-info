@@ -21,7 +21,7 @@ const ThemedBackground = styled(Box)`
   height: 365px;
   z-index: -1;
   top: 0;
-  width: 100vw;
+  width: 100%;
 
   @media screen and (max-width: 64em) {
     height: 559px;
