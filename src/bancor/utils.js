@@ -1,6 +1,6 @@
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
-import { etherscanKey } from '../constants/credentials'
+import { infuraKey } from '../constants/credentials'
 import { isAddress } from '../helpers'
 
 dayjs.extend(utc)
@@ -10,7 +10,13 @@ export const hexToNumber = str => parseInt(str, 16)
 export const numberToHex = n => `0x${n.toString(16)}`
 
 export const getBlockNumber = async () => {
-  return fetch(`https://api.etherscan.io/api?module=proxy&action=eth_blockNumber&apikey=${etherscanKey}`)
+  return fetch(`https://mainnet.infura.io/v3/${infuraKey}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ jsonrpc: '2.0', id: 1, method: 'eth_blockNumber', params: [] })
+  })
     .then(res => res.json())
     .then(res => {
       return hexToNumber(res.result)
@@ -18,11 +24,18 @@ export const getBlockNumber = async () => {
 }
 
 export const getBlock = async blockNumber => {
-  return fetch(
-    `https://api.etherscan.io/api?module=proxy&action=eth_getBlockByNumber&tag=${numberToHex(
-      blockNumber
-    )}&boolean=true&apikey=${etherscanKey}`
-  )
+  return fetch(`https://mainnet.infura.io/v3/${infuraKey}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      jsonrpc: '2.0',
+      method: 'eth_getBlockByNumber',
+      params: [numberToHex(blockNumber), true],
+      id: 1
+    })
+  })
     .then(res => res.json())
     .then(res => {
       return {
