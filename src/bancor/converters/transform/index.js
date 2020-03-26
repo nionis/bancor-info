@@ -18,9 +18,9 @@ const mergeConverters = (now, aDayOld) => {
 const deriveItems = converters => {
   return converters.reduce((result, converter) => {
     const noTokenBalances = converter.tokenBalances.length === 0 || converter.oldTokenBalances.length === 0
-    const noTokenSwapTotals = converter.tokenSwapTotals.length === 0 || converter.oldTokenSwapTotals.length === 0
+    // const noTokenSwapTotals = converter.tokenSwapTotals.length === 0 || converter.oldTokenSwapTotals.length === 0
     const noSmartToken = typeof converter.smartToken === 'undefined'
-    const invalidConverter = noTokenBalances || noTokenSwapTotals || noSmartToken
+    const invalidConverter = noTokenBalances || noSmartToken
 
     if (invalidConverter) return result
 
@@ -42,7 +42,7 @@ const deriveItems = converters => {
 
     const { base, quote, liquidity, volume, price } = derivedItems
 
-    if (![tokens.BNT, tokens.USDB].includes(quote.address)) return result
+    if (![tokens.BNT, tokens.USDB, tokens.ETH].includes(quote.address)) return result
 
     const { liquidity: oldLiquidity, volume: oldVolume, price: oldPrice } = derivedOldItems
 
@@ -171,20 +171,20 @@ const transform = ({ response, mainConverters }) => {
   // merge new and old data
   const converters = mergeConverters(response.now, response.aDayOld)
 
-  // add pseudo BNTUSDB
-  const BNTUSDB = (() => {
-    const USDBBNT = Object.assign({}, converters.find(c => c.id === mainConverters.USDBBNT.id) || {})
+  // // add pseudo BNTUSDB
+  // const BNTUSDB = (() => {
+  //   const USDBBNT = Object.assign({}, converters.find(c => c.id === mainConverters.USDBBNT.id) || {})
 
-    return {
-      ...USDBBNT,
-      smartToken: {
-        ...USDBBNT.smartToken,
-        symbol: 'BNT / USDB'
-      },
-      isProxy: true
-    }
-  })()
-  converters.push(BNTUSDB)
+  //   return {
+  //     ...USDBBNT,
+  //     smartToken: {
+  //       ...USDBBNT.smartToken,
+  //       symbol: 'BNT / USDB'
+  //     },
+  //     isProxy: true
+  //   }
+  // })()
+  // converters.push(BNTUSDB)
 
   // map by converter id
   const items = addExtra(deriveItems(converters), mainConverters)

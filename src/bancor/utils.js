@@ -54,7 +54,7 @@ export const getBlocksByTimestamps = async ({ timestamps }) => {
 
   // get current block number
   const currentBlockNumber = await getBlockNumber()
-  const currentBlock = await getBlock(currentBlockNumber, currentBlockNumber)
+  const currentBlock = await getBlock(currentBlockNumber - 10, currentBlockNumber)
 
   return timestamps.map(timestamp => {
     if (timestamp > currentBlock.timestamp) return currentBlock
