@@ -42,7 +42,7 @@ export default () => {
         ))}
       </div>
       <hr style={{ width: '100%' }} />
-      <Link href={`//https://github.com/nionis/bancor-info`} target="_blank">
+      <Link href={`//https://github.com/nionis/bancor-info#become-a-partner`} target="_blank">
         add you own ↗
       </Link>
     </Dexes>
