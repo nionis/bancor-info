@@ -283,10 +283,10 @@ export const ExchangePage = function({
   priceUSD,
   chartData,
   swapsData,
-  tokenAddress,
-  historyDaysToQuery,
-  setHistoryDaysToQuery
+  tokenAddress
 }) {
+  const [historyDaysToQuery, setHistoryDaysToQuery] = useState(timeframeOptionsSubgraph[0].value)
+
   const [chartOption, setChartOption] = useState('liquidity')
 
   const [txFilter, setTxFilter] = useState('All')

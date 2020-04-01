@@ -1,21 +1,33 @@
-# Uniswap History
+# Bancor History
 
-[![Build Status](https://travis-ci.org/Uniswap/uniswap-info.svg?branch=master)](https://travis-ci.org/Uniswap/uniswap-info)
-[![Netlify Status](https://api.netlify.com/api/v1/badges/fe433ca1-042b-40c1-890f-a92fd74ecc00/deploy-status)](https://app.netlify.com/sites/uniswap-info/deploys)
-[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
+Transaction and liquidity pool stats for [Bancor](https://www.bancor.network/).
 
-Transaction and liquidity pool stats for [Uniswap](https://uniswap.io).
-
-Check it out live: [https://uniswap.info](https://uniswap.info).
+Check it out live: [https://bancor-info.now.sh/](https://bancor-info.now.sh/).
 
 ### To Start Development
 
 ###### Installing dependencies
+
 ```bash
 yarn
 ```
 
 ###### Running locally
+
 ```bash
 yarn start
 ```
+
+### Become a partner
+
+1. fork this project
+2. add your information in this [file](/src/constants/dexes.js)
+3. submit a PR
+
+### About
+
+A fan made project for the Bancor Network!
+
+Upcoming improvements:
+
+- improve performance
