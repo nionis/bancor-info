@@ -39,7 +39,17 @@ const Popup = ({ onClose, children }) => {
   return (
     <Wrapper>
       <CloseIcon onClick={onClose}>✕</CloseIcon>
-      <Container>{children}</Container>
+      <Container
+        onClick={event => {
+          const left = event.target.getBoundingClientRect().left
+
+          if (left === 0) {
+            onClose()
+          }
+        }}
+      >
+        {children}
+      </Container>
     </Wrapper>
   )
 }
