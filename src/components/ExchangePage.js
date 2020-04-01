@@ -12,7 +12,7 @@ import TransactionsList from './TransactionsList'
 import Chart from './Chart'
 import Loader from './Loader'
 import { Divider, Hint } from '.'
-import { getTimeFrame, timeframeOptions } from '../constants'
+import { getTimeFrame, timeframeOptionsSubgraph } from '../constants'
 import Copy from './Copy'
 import { formattedNum } from '../helpers'
 import Dexes from './Dexes'
@@ -469,7 +469,7 @@ export const ExchangePage = function({
                 <Box width={144}>
                   <Select
                     placeholder="Timeframe"
-                    options={timeframeOptions}
+                    options={timeframeOptionsSubgraph}
                     defaultValue={getTimeFrame(historyDaysToQuery)}
                     onChange={select => {
                       setHistoryDaysToQuery(select.value)

@@ -30,7 +30,7 @@ import LocalLoader from './components/LocalLoader'
 
 function App(props) {
   // set default time box to all time
-  const [historyDaysToQuery, setHistoryDaysToQuery] = useState(timeframeOptions[0].value)
+  const [historyDaysToQuery, setHistoryDaysToQuery] = useState(timeframeOptions[3].value)
 
   // currency across site can be USD or ETH
   const [currencyUnit, setCurrencyUnit] = useState('USD')

@@ -1,9 +1,11 @@
 export const timeframeOptions = [
-  // { value: '1week', label: '1 week' },
-  { value: '1month', label: '1 month' }
-  // { value: '3months', label: '3 months' },
-  // { value: 'all', label: 'All time' }
+  { value: '1week', label: '1 week' },
+  { value: '1month', label: '1 month' },
+  { value: '3months', label: '3 months' },
+  { value: 'all', label: 'All time' }
 ]
+
+export const timeframeOptionsSubgraph = [{ value: '1week', label: '1 week' }]
 
 export const getTimeFrame = current => {
   switch (current) {
