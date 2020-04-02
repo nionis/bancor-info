@@ -171,20 +171,20 @@ const transform = ({ response, mainConverters }) => {
   // merge new and old data
   const converters = mergeConverters(response.now, response.aDayOld)
 
-  // // add pseudo BNTUSDB
-  // const BNTUSDB = (() => {
-  //   const USDBBNT = Object.assign({}, converters.find(c => c.id === mainConverters.USDBBNT.id) || {})
+  // add pseudo BNTUSDB
+  const BNTUSDB = (() => {
+    const USDBBNT = Object.assign({}, converters.find(c => c.id === mainConverters.USDBBNT.id) || {})
 
-  //   return {
-  //     ...USDBBNT,
-  //     smartToken: {
-  //       ...USDBBNT.smartToken,
-  //       symbol: 'BNT / USDB'
-  //     },
-  //     isProxy: true
-  //   }
-  // })()
-  // converters.push(BNTUSDB)
+    return {
+      ...USDBBNT,
+      smartToken: {
+        ...USDBBNT.smartToken,
+        symbol: 'BNT / USDB'
+      },
+      isProxy: true
+    }
+  })()
+  converters.push(BNTUSDB)
 
   // map by converter id
   const items = addExtra(deriveItems(converters), mainConverters)

@@ -16,6 +16,9 @@ const deriveTotals = converters => {
           result[k] = new BigNumber(0).toString()
         }
 
+        // ignore pseudo converters
+        if (converter.isProxy) return
+
         result[k] = new BigNumber(result[k]).plus(converter[k]).toString()
       })
     })
