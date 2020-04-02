@@ -132,7 +132,13 @@ const CustomLink = styled(Link)`
   text-decoration: none;
 
   &:visited {
-    color: rgb(47, 128, 237);
+    color: var(--c-button);
+  }
+
+  cursor: ${props => (props.disabled ? 'default' : 'pointer')};
+
+  & > div {
+    color: ${props => (props.disabled ? 'black' : 'var(--c-button)')};
   }
 `
 
@@ -268,6 +274,18 @@ function OverviewList({ currencyUnit }) {
       exchange.baseSymbol = 'cSAI'
       exchange.baseName = 'Compound SAI'
     }
+
+    const isProxy = !!exchange.isProxy
+    const invalidExchange = exchange.id === '0x0000000000000000000000000000000000000000'
+    const invalidToken = exchange.base === '0x0000000000000000000000000000000000000000'
+    const invalid = isProxy || invalidToken || invalidExchange
+
+    const to = invalid ? '/' : '/exchange/' + exchange.id
+    const onClick = () => {
+      if (invalid) return
+      window.scrollTo(0, 0)
+    }
+
     return (
       <DashGridClickable style={{ height: '60px' }}>
         <Flex alignItems="center" justifyContent="flex-start">
@@ -276,23 +294,13 @@ function OverviewList({ currencyUnit }) {
             <TokenLogo size={24} address={exchange.base} style={{ height: '24px', width: '24px' }} />
           </LogoBox>
           {!belowSmall ? (
-            <CustomLink
-              to={'/exchange/' + exchange.id}
-              onClick={() => {
-                window.scrollTo(0, 0)
-              }}
-            >
+            <CustomLink disabled={invalid} to={to} onClick={onClick}>
               <Text color="button" area={'name'} fontWeight="500">
                 {exchange.baseName}
               </Text>
             </CustomLink>
           ) : (
-            <CustomLink
-              to={'/exchange/' + exchange.id}
-              onClick={() => {
-                window.scrollTo(0, 0)
-              }}
-            >
+            <CustomLink to={to} onClick={onClick}>
               <DataText area={'symbol'} color="button">
                 {exchange.baseSymbol}
               </DataText>
