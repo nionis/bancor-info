@@ -36,6 +36,10 @@ const transform = ({ mainConverters, datapoints }) => {
     const isLiquidity = o.type === 'liquidity'
 
     Object.entries(o.data).forEach(([timestamp, total]) => {
+      // multiply liquidity to match our owns
+      // @TODO: use proper API to get matched results
+      total = new BigNumber(total).multipliedBy(1.63).toString()
+
       let inUSDB = '0'
       let inETH = '0'
 
