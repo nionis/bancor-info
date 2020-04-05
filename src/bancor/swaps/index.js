@@ -96,7 +96,19 @@ export default async ({ step = 1000, converterUsed }) => {
             to: 'BNT'
           })
         } else {
-          const converter = converters.get(`${swap.toToken.symbol}BNT`)
+          let toToken = swap.toToken.symbol
+          if (toToken === 'DAI') {
+            toToken = 'USDB'
+          }
+
+          const pair = `${toToken}BNT`
+          const converter = converters.get(pair)
+
+          if (!converter) {
+            console.warn(`converter ${pair} not found!`)
+            return value
+          }
+
           return new BigNumber(value).multipliedBy(converter.price).toString()
         }
       })()

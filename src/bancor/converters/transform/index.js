@@ -108,13 +108,17 @@ const deriveItems = converters => {
       isProxy: !!converter.isProxy
     }
 
-    // if duplicate is found, pick one with highest liquidity
+    // if duplicate is found, change pair
     if (result.has(item.pair)) {
-      const current = result.get(item.pair)
+      let index = 0
+      let newPair = item.pair
 
-      if (new BigNumber(current.liquidity).gt(item.liquidity)) {
-        return result
+      while (result.has(newPair)) {
+        index++
+        newPair = `${item.pair}-${index}`
       }
+
+      item.pair = newPair
     }
 
     // if no price don't add
