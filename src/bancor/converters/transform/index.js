@@ -105,7 +105,8 @@ const deriveItems = converters => {
       priceChange24hr,
       liquidity24Hr,
       liquidityChange24hr,
-      isProxy: !!converter.isProxy
+      isProxy: !!converter.isProxy,
+      index: 0
     }
 
     // if duplicate is found, change pair
@@ -119,6 +120,7 @@ const deriveItems = converters => {
       }
 
       item.pair = newPair
+      item.index = index
     }
 
     // if no price don't add

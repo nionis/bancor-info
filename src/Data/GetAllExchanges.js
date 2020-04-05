@@ -58,7 +58,7 @@ export function useAllExchanges() {
 
 // build the label for dropdown
 const buildDirectoryLabel = exchange => {
-  let { id, tokenAddress, tokenSymbol, poolSymbol } = exchange
+  let { id, tokenAddress, tokenSymbol, poolSymbol, index } = exchange
   const exchangeAddress = id
 
   // custom handling for UI
@@ -70,8 +70,13 @@ const buildDirectoryLabel = exchange => {
     }
   }
 
+  let label = `${tokenSymbol}:${poolSymbol}`
+  if (index > 0) {
+    label = `${label}:${index + 1}`
+  }
+
   return {
-    label: `${tokenSymbol}:${poolSymbol}`,
+    label,
     value: exchangeAddress,
     tokenAddress: tokenAddress
   }

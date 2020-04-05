@@ -10,7 +10,8 @@ export const directoryQuery = map => {
       poolSymbol: item.quoteSymbol,
       poolName: item.quoteName,
       poolDecimals: item.quoteDecimals,
-      poolAddress: item.quote
+      poolAddress: item.quote,
+      index: item.index
     }
 
     result[data.id] = data
