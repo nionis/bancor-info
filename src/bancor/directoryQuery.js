@@ -6,7 +6,7 @@ export const directoryQuery = map => {
       tokenName: item.baseName,
       tokenDecimals: item.baseDecimals,
       tokenAddress: item.base,
-      ethBalance: item.liquidityBNT,
+      ethBalance: item.liquidityETHInUnit,
       poolSymbol: item.quoteSymbol,
       poolName: item.quoteName,
       poolDecimals: item.quoteDecimals,

@@ -133,7 +133,7 @@ export default function NavHeader({ exchanges, setCurrencyUnit, currencyUnit }) 
             setCapEth={setCapEth}
             capEth={capEth}
             tokenSelect={true}
-            placeholder={belowLarge ? 'Tokens' : 'Find token'}
+            placeholder={belowLarge ? 'Exchanges' : 'Find exchange'}
             onChange={select => {
               history.push('/exchange/' + select.value)
             }}
