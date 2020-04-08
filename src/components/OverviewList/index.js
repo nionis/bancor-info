@@ -251,10 +251,10 @@ function OverviewList({ currencyUnit }) {
       })
 
       newExchanges = Array.from(result.values()).sort((a, b) => {
-        return new BigNumber(b.liquidity).minus(a.liquidity)
+        return Number(new BigNumber(b.liquidity).minus(a.liquidity).toString())
       })
 
-      setMaxPage(Math.floor(newExchanges.length / TXS_PER_PAGE))
+      setMaxPage(Math.ceil(newExchanges.length / TXS_PER_PAGE))
       SetFilteredTxs(newExchanges)
       setExchanges(newExchanges)
     }
