@@ -17,7 +17,7 @@ const deriveTotals = converters => {
         }
 
         // ignore pseudo converters
-        if (converter.isProxy) return
+        if (converter.isOnlyToken) return
 
         result[k] = new BigNumber(result[k]).plus(converter[k]).toString()
       })

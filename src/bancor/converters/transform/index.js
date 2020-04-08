@@ -1,4 +1,5 @@
 import BigNumber from 'bignumber.js'
+import createBNTUSDB from './createBNTUSDB'
 import toUnit from './toUnit'
 import toAltPrices from './toAltPrices'
 import deriveItem from './deriveItem'
@@ -105,7 +106,7 @@ const deriveItems = converters => {
       priceChange24hr,
       liquidity24Hr,
       liquidityChange24hr,
-      isProxy: !!converter.isProxy,
+      isOnlyToken: !!converter.isOnlyToken,
       index: 0
     }
 
@@ -177,23 +178,19 @@ const transform = ({ response, mainConverters }) => {
   // merge new and old data
   const converters = mergeConverters(response.now, response.aDayOld)
 
-  // add pseudo BNTUSDB
-  const BNTUSDB = (() => {
-    const USDBBNT = Object.assign({}, converters.find(c => c.id === mainConverters.USDBBNT.id) || {})
+  // map by converter pair and derive data
+  const plainItems = deriveItems(converters)
 
-    return {
-      ...USDBBNT,
-      smartToken: {
-        ...USDBBNT.smartToken,
-        symbol: 'BNT / USDB'
-      },
-      isProxy: true
-    }
-  })()
-  converters.push(BNTUSDB)
+  // add pseudo BNTUSDB converter
+  const BNTUSDB = createBNTUSDB(plainItems, mainConverters)
+  plainItems.set(BNTUSDB.pair, BNTUSDB)
 
-  // map by converter id
-  const items = addExtra(deriveItems(converters), mainConverters)
+  const items = addExtra(plainItems, mainConverters)
+  // edit pseudo BNTUSDB converter
+  items.set(BNTUSDB.pair, {
+    ...items.get(BNTUSDB.pair),
+    quoteSymbol: 'ALL'
+  })
 
   return items
 }

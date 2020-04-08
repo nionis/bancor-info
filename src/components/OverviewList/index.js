@@ -275,10 +275,10 @@ function OverviewList({ currencyUnit }) {
       exchange.baseName = 'Compound SAI'
     }
 
-    const isProxy = !!exchange.isProxy
+    const isOnlyToken = !!exchange.isOnlyToken
     const invalidExchange = exchange.id === '0x0000000000000000000000000000000000000000'
     const invalidToken = exchange.base === '0x0000000000000000000000000000000000000000'
-    const invalid = isProxy || invalidToken || invalidExchange
+    const invalid = isOnlyToken || invalidToken || invalidExchange
 
     const to = invalid ? '/' : '/exchange/' + exchange.id
     const onClick = () => {
