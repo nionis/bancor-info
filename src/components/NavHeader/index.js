@@ -9,7 +9,7 @@ import Select from '../Select'
 import CurrencySelect from '../CurrencySelect'
 import Panel from '../Panel'
 import Popup from '../Popup'
-import Dexes from '../Dexes'
+import Widget from '../Widget'
 
 const Header = styled(Panel)`
   display: grid;
@@ -143,7 +143,7 @@ export default function NavHeader({ exchanges, setCurrencyUnit, currencyUnit }) 
       {popupVisible ? (
         <Popup onClose={() => setPopupVisibility(false)}>
           <FrameBorder>
-            <Dexes />
+            <Widget />
           </FrameBorder>
         </Popup>
       ) : null}

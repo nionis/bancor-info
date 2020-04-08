@@ -8,6 +8,7 @@ const Dexes = styled.div`
   background: white;
   padding: 50px;
   text-align: center;
+  align-items: center;
 
   & > .title {
     font-weight: 500;
@@ -28,9 +29,9 @@ const Link = styled.a`
   text-decoration: none;
 `
 
-export default () => {
+export default props => {
   return (
-    <Dexes>
+    <Dexes {...props}>
       <div className="title">Alternative partners</div>
       <div className="exchanges">
         {dexes.map(dex => (
