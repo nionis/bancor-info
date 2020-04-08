@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useMedia } from 'react-use'
+import ReactTooltip from 'react-tooltip'
 import BigNumber from 'bignumber.js'
 import fetchConverters from '../../bancor/converters'
 import { Box, Flex, Text } from 'rebass'
@@ -275,74 +276,88 @@ function OverviewList({ currencyUnit }) {
       exchange.baseName = 'Compound SAI'
     }
 
+    const isBNTUSDB = exchange.pair === 'BNTUSDB'
     const isOnlyToken = !!exchange.isOnlyToken
     const invalidExchange = exchange.id === '0x0000000000000000000000000000000000000000'
     const invalidToken = exchange.base === '0x0000000000000000000000000000000000000000'
-    const invalid = isOnlyToken || invalidToken || invalidExchange
+    const invalid = isBNTUSDB || isOnlyToken || invalidToken || invalidExchange
 
     const to = invalid ? '/' : '/exchange/' + exchange.id
-    const onClick = () => {
-      if (invalid) return
+    const tooltip = isBNTUSDB
+      ? 'This item represents the sum of all liquidity and volume exchanged through all BNT based converters'
+      : isOnlyToken
+      ? `EOS converter data not available`
+      : undefined
+    const onClick = event => {
+      if (invalid) {
+        event.stopPropagation()
+        event.preventDefault()
+        return
+      }
+
       window.scrollTo(0, 0)
     }
 
     return (
-      <DashGridClickable style={{ height: '60px' }}>
-        <Flex alignItems="center" justifyContent="flex-start">
-          <div style={{ minWidth: '30px' }}>{id + (page - 1) * TXS_PER_PAGE}</div>
-          <LogoBox>
-            <TokenLogo size={24} address={exchange.base} style={{ height: '24px', width: '24px' }} />
-          </LogoBox>
-          {!belowSmall ? (
-            <CustomLink disabled={invalid} to={to} onClick={onClick}>
-              <Text color="button" area={'name'} fontWeight="500">
-                {exchange.baseName}
-              </Text>
-            </CustomLink>
-          ) : (
-            <CustomLink to={to} onClick={onClick}>
-              <DataText area={'symbol'} color="button">
-                {exchange.baseSymbol}
+      <>
+        <ReactTooltip place="right" effect="solid" />
+        <DashGridClickable style={{ height: '60px' }}>
+          <Flex alignItems="center" justifyContent="flex-start">
+            <div style={{ minWidth: '30px' }}>{id + (page - 1) * TXS_PER_PAGE}</div>
+            <LogoBox>
+              <TokenLogo size={24} address={exchange.base} style={{ height: '24px', width: '24px' }} />
+            </LogoBox>
+            {!belowSmall ? (
+              <CustomLink disabled={invalid} to={to} onClick={onClick} data-tip={tooltip}>
+                <Text color="button" area={'name'} fontWeight="500">
+                  {exchange.baseName}
+                </Text>
+              </CustomLink>
+            ) : (
+              <CustomLink to={to} onClick={onClick}>
+                <DataText area={'symbol'} color="button">
+                  {exchange.baseSymbol}
+                </DataText>
+              </CustomLink>
+            )}
+          </Flex>
+          {!belowMedium ? (
+            <>
+              <DataText area={'symbol'}>{exchange.baseSymbol}</DataText>
+              <DataText area={'pool'}>{exchange.quoteSymbol}</DataText>
+              <DataText area={'price'}>
+                {exchange.price && exchange.priceUSDB
+                  ? currencyUnit === 'USD'
+                    ? '$' + formattedNum(exchange.priceUSDB, true)
+                    : formattedNum(exchange.priceETH) + ' ETH'
+                  : ''}
               </DataText>
-            </CustomLink>
+            </>
+          ) : (
+            ''
           )}
-        </Flex>
-        {!belowMedium ? (
-          <>
-            <DataText area={'symbol'}>{exchange.baseSymbol}</DataText>
-            <DataText area={'pool'}>{exchange.quoteSymbol}</DataText>
-            <DataText area={'price'}>
-              {exchange.price && exchange.priceUSDB
-                ? currencyUnit === 'USD'
-                  ? '$' + formattedNum(exchange.priceUSDB, true)
-                  : formattedNum(exchange.priceETH) + ' ETH'
-                : ''}
-            </DataText>
-          </>
-        ) : (
-          ''
-        )}
-        <DataText area={'liquidity'}>
-          {currencyUnit === 'USD'
-            ? '$' + formattedNum(exchange.liquidityUSDBInUnit, true)
-            : formattedNum(exchange.liquidityETHInUnit) + ' ETH'}
-        </DataText>
-
-        <DataText area={'volume'}>
-          {currencyUnit === 'USD'
-            ? '$' + formattedNum(exchange.volume24HrUSDBInUnit, true)
-            : formattedNum(exchange.volume24HrETHInUnit) + ' ETH'}
-        </DataText>
-        {!belowSmall ? (
-          <DataText area={'txs'}>
+          <DataText area={'liquidity'}>
             {currencyUnit === 'USD'
-              ? getPercentChangeColor(exchange.priceChange24hr)
-              : getPercentChangeColor(exchange.priceChange24hr)}
+              ? '$' + formattedNum(exchange.liquidityUSDBInUnit, true)
+              : formattedNum(exchange.liquidityETHInUnit) + ' ETH'}
           </DataText>
-        ) : (
-          ''
-        )}
-      </DashGridClickable>
+
+          <DataText area={'volume'}>
+            {currencyUnit === 'USD'
+              ? '$' + formattedNum(exchange.volume24HrUSDBInUnit, true)
+              : formattedNum(exchange.volume24HrETHInUnit) + ' ETH'}
+          </DataText>
+          {!belowSmall ? (
+            <DataText area={'txs'}>
+              {currencyUnit === 'USD'
+                ? getPercentChangeColor(exchange.priceChange24hr)
+                : getPercentChangeColor(exchange.priceChange24hr)}
+            </DataText>
+          ) : (
+            ''
+          )}
+        </DashGridClickable>
+      </>
     )
   }
 
