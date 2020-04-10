@@ -25,7 +25,7 @@ const createBNTUSDB = (converters, mainConverters) => {
 
       if (converter.quoteIsBNT) {
         const liquidity = exchange({
-          v: converter.quoteLiquidity,
+          v: converter.liquidity,
           USDBBNT: mainConverters.USDBBNT,
           ETHBNT: mainConverters.ETHBNT,
           ETHUSDB: mainConverters.ETHUSDB,

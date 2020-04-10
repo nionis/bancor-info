@@ -186,10 +186,17 @@ const transform = ({ response, mainConverters }) => {
   plainItems.set(BNTUSDB.pair, BNTUSDB)
 
   const items = addExtra(plainItems, mainConverters)
+
   // edit pseudo BNTUSDB converter
   items.set(BNTUSDB.pair, {
     ...items.get(BNTUSDB.pair),
     quoteSymbol: 'ALL'
+  })
+
+  // edit ETHBNT
+  items.set('ETHBNT', {
+    ...items.get('ETHBNT'),
+    baseName: 'ETH'
   })
 
   return items
