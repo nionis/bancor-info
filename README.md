@@ -2,7 +2,7 @@
 
 Transaction and liquidity pool stats for [Bancor](https://www.bancor.network/).
 
-Check it out live: [https://bancor-info.now.sh/](https://bancor-info.now.sh/).
+Check it out live: [https://bancor-network.info/](https://bancor-network.info/).
 
 ### To Start Development
 
