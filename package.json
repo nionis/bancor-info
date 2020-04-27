@@ -1,8 +1,8 @@
 {
-  "name": "bancor-info",
-  "version": "0.1.0",
+  "name": "bancor-network-info",
+  "version": "1.0.0",
   "private": true,
-  "homepage": "https://bancor-info.now.sh/",
+  "homepage": "https://bancor-network.info/",
   "dependencies": {
     "@reach/router": "^1.2.1",
     "apollo-cache-inmemory": "^1.6.3",
