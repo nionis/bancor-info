@@ -182,3 +182,7 @@ export const createFakeConverter = ({ baseSymbol, quoteSymbol, ...rest }) => {
     ...rest
   }
 }
+
+export const getCountryCode = () => {
+  return fetch(`http://ip-api.com/json/?fields=countryCode`).then(res => res.json())
+}

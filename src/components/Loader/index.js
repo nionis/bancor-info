@@ -4,7 +4,7 @@ const Loader = styled.div`
   pointer-events: none;
   display: grid;
   place-items: center;
-  background-image: url('./loading.gif');
+  background-image: url('./loading.svg');
   background-size: 72px;
   background-repeat: no-repeat;
   background-position: center;

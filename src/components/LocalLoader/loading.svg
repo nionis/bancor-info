@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3239 3239">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #999;
+      }
+
+      .cls-2,
+      .cls-3 {
+        fill: none;
+        stroke-width: 60px;
+      }
+
+      .cls-2 {
+        stroke: #d2d2d2;
+      }
+
+      .cls-3 {
+        stroke: #999;
+        animation: rotation 2s infinite linear;
+        transform-origin: 50% 50%;
+      }
+
+      @keyframes rotation {
+        from {
+          transform: rotate(0deg);
+        }
+
+        to {
+          transform: rotate(359deg);
+        }
+      }
+
+    </style>
+  </defs>
+  <title>bancor pre loader</title>
+  <path class="cls-1" d="M1571.46,751l417.61,241.12-417.61,241.12L1153.85,992.12Zm510.43,383.61v482.44L1656.05,1862.7V1380.46Zm-425.84,924.94,564-324.92v482.44L1656.05,2542Zm-596-442.7V1134.61l425.64,245.85V1862.7Zm0,679.29V1813.7l425.64,245.85v482.24Z" />
+  <path class="cls-2" d="M3209,1619.5c0,877.86-711.64,1589.5-1589.5,1589.5S30,2497.36,30,1619.5,741.64,30,1619.5,30,3209,741.64,3209,1619.5Z" />
+  <path class="cls-2" d="M3209,1619.5c0,877.86-711.64,1589.5-1589.5,1589.5S30,2497.36,30,1619.5,741.64,30,1619.5,30,3209,741.64,3209,1619.5Z" />
+  <path class="cls-3" d="M463.79,2710.77C194.87,2426.07,30,2042,30,1619.5c0-528.16,257.6-996.15,654-1285.19" />
+</svg>
