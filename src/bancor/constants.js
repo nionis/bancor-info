@@ -1,3 +1,4 @@
+// using ISO 3166 Alpha-3 code
 export const blacklistedCountryCodes = ['USA']
 const joinedCountryCodes = blacklistedCountryCodes.join(', ')
 

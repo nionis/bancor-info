@@ -184,5 +184,7 @@ export const createFakeConverter = ({ baseSymbol, quoteSymbol, ...rest }) => {
 }
 
 export const getCountryCode = () => {
-  return fetch(`http://ip-api.com/json/?fields=countryCode`).then(res => res.json())
+  return fetch(`https://ipapi.co/json`, { referrerPolicy: 'no-referrer' })
+    .then(res => res.json())
+    .then(res => res.country_code_iso3)
 }

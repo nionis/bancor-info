@@ -24,8 +24,8 @@ const Widget = props => {
 
   useEffect(() => {
     async function updateCountryCode() {
-      const response = await getCountryCode()
-      setCountryCode(response.countryCode)
+      const countryCode = await getCountryCode()
+      setCountryCode(countryCode)
     }
 
     updateCountryCode()
